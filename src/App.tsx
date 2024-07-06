@@ -1,23 +1,41 @@
 import { getCategories, getQuestions } from "./util/api";
-import { useEffect } from "react";
+import { SetStateAction, useEffect } from "react";
+import { useState } from "react";
+
+
 function App() {
 
-  
-    getCategories()
-    getQuestions()
-  
-  
-  
+  const [selectedCategory, setSelectedCategory] = useState('Linux')
+  const handleChange = (e: { target: { value: SetStateAction<string>; }; }) =>{ setSelectedCategory(e.target.value)}
+  console.log(selectedCategory)
+  const [questions,setQuestions]=useState([])
+
+  useEffect(() => {
+   // getCategories().then(data => {
+    //  const categories = data
+    //  console.log(categories)
+  //  })
+    getQuestions(selectedCategory).then(data => {
+      const questions = data
+      console.log(questions)
+    })
+  }
+    , [selectedCategory])
+
+
+
+
+
   return <div>
 
-   
+
 
     <label>Select a quiz category : </label>
-    <select name="category" >
-      <option value='1'>1</option>
-      <option value='2'>2</option>
-      <option value='3' selected>3</option>
-      <option value='4'>4</option>
+    <select name="category" value={selectedCategory} onChange={handleChange}>
+      <option value='Linux'>Linux</option>
+      <option value='Docker'>Docker</option>
+      <option value='SQL' selected>SQL</option>
+      <option value='Code'> Code </option>
     </select>
     <button className="border-2 border-black rounded-md ml-10">Start quiz</button>
     <div className="flex flex-col w-1/2 gap-y-16 border-2 border-black rounded-md">
