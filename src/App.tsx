@@ -9,35 +9,40 @@ function App() {
   const [selectedAnswer, setSelectedAnswer] = useState('')
   const [counter, setCounter] = useState(-1)
   const [score, setScore] = useState(0)
- 
+
 
 
   const handleStarOver = () => {
     setCounter(0)
     setQuizState('running')
+    setScore(0)
   }
   const handleNextQuest = () => {
-    if (counter !== 9) {
+    if (counter !== questions.length - 1) {
 
       if (selectedAnswer === questions[counter].correct_answer) {
-        setScore(score + 10)
+        setScore(score + 1)
       }
       setCounter(counter + 1)
-   
+
     }
     else {
-      setCounter(counter+1)
+
+      if (selectedAnswer === questions[counter].correct_answer) {
+        setScore(score + 1)
+      }
+      setCounter(counter + 1)
       setQuizState('finished')
     }
 
- 
+
   }
 
-  const handleStart= () =>{
+  const handleStart = () => {
     setQuizState('running')
-    setCounter(0) 
-   
-    }
+    setCounter(0)
+
+  }
 
 
   const handleAnswerChange = (event: { target: { value: any; }; }) => {
@@ -65,7 +70,7 @@ function App() {
   console.log(selectedAnswer)
   console.log(counter)
   console.log(score)
-console.log(questions)
+  console.log(questions)
 
 
   return <div>
@@ -74,17 +79,20 @@ console.log(questions)
 
     <label>Select a quiz category : </label>
     <select name="category" value={selectedCategory} onChange={handleChange}>
-      <option value='---'>---</option>
+      <option value='bash'>Bash</option>
       <option value='Linux'>Linux</option>
       <option value='Docker'>Docker</option>
       <option value='SQL'>SQL</option>
       <option value='Code'> Code </option>
+      <option value='DevOps'> DevOps </option>
+      <option value='CMS'> CMS </option>
+      <option value='uncategorized'> Uncategorized</option>
     </select>
     <button onClick={handleStart} className="border-2 border-black rounded-md ml-10">Start quiz</button>
 
 
 
-    <div className={quizState==='selectCategory'?'hidden':'flex flex-col  gap-y-16 border-2 border-black rounded-md'}>
+    <div className={quizState === 'selectCategory' ? 'hidden' : 'flex flex-col  gap-y-16 border-2 border-black rounded-md'}>
       <div className="flex justify-between">
         <div className="  border-2">{(counter > -1) && (counter < 10) ? `Question ${counter + 1} of 10` : ``} </div>
         <div className="  border-2">30''</div>
@@ -98,16 +106,16 @@ console.log(questions)
           <div>
             <input type="radio" id="b" value="answer_b" checked={selectedAnswer === 'answer_b'} onChange={handleAnswerChange} />
             <label>{quizState === 'running' ? questions[counter].answers.answer_b : 'loading'}</label></div>
-          <div className={quizState==='running'?(questions[counter].answers.answer_c===null?'hidden':''):''}>
+          <div className={quizState === 'running' ? (questions[counter].answers.answer_c === null ? 'hidden' : '') : ''}>
             <input type="radio" id="c" value="answer_c" checked={selectedAnswer === 'answer_c'} onChange={handleAnswerChange} />
             <label>{quizState === 'running' ? questions[counter].answers.answer_c : 'loading'}</label></div>
-          <div className={quizState==='running'?(questions[counter].answers.answer_d===null?'hidden':''):''}>
+          <div className={quizState === 'running' ? (questions[counter].answers.answer_d === null ? 'hidden' : '') : ''}>
             <input type="radio" id="d" value="answer_d" checked={selectedAnswer === 'answer_d'} onChange={handleAnswerChange} />
             <label>{quizState === 'running' ? questions[counter].answers.answer_d : 'loading'}</label></div>
-          <div className={quizState==='running'?(questions[counter].answers.answer_e===null?'hidden':''):''}>
+          <div className={quizState === 'running' ? (questions[counter].answers.answer_e === null ? 'hidden' : '') : ''}>
             <input type="radio" id="e" value="answer_e" checked={selectedAnswer === 'answer_e'} onChange={handleAnswerChange} />
             <label>{quizState === 'running' ? questions[counter].answers.answer_e : 'loading'}</label></div>
-          <div className={quizState==='running'?(questions[counter].answers.answer_f===null?'hidden':''):''} >
+          <div className={quizState === 'running' ? (questions[counter].answers.answer_f === null ? 'hidden' : '') : ''} >
             <input type="radio" id="f" value="answer_f" checked={selectedAnswer === 'answer_f'} onChange={handleAnswerChange} />
             <label>{quizState === 'running' ? questions[counter].answers.answer_f : 'loading'}</label></div>
 
@@ -117,11 +125,11 @@ console.log(questions)
       </div>
       <div className="flex justify-between">
         <button className="border-2 border-black rounded-md" onClick={handleStarOver} >Start over</button>
-        <button className="border-2 border-black rounded-md" onClick={handleNextQuest}>{counter === 9 ? 'Show results' : 'Next '}</button>
+        <button className={quizState === 'running' ? "border-2 border-black rounded-md" : 'hidden'} onClick={handleNextQuest}>{counter === questions.length - 1 ? 'Show results' : 'Next '}</button>
 
       </div>
     </div>
-    <h1> {counter === 10 ? `Your score is ${score} %` : ``} </h1>
+    <h1 className={score/questions.length*100 <= 0.5 ? 'text-3xl font-bold underline text-center bg-red-600' : 'text-3xl font-bold underline text-center bg-green-600'}> {counter === questions.length ? `Your score is ${score/questions.length*100} %` : ``} </h1>
 
   </div>
 }
