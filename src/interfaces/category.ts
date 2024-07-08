@@ -14,14 +14,14 @@ export type Question = {
     answer_e: string | null,
     answer_f: string | null
   },
-  multiple_correct_answers: boolean,
+  multiple_correct_answers: string,
   correct_answers: {
-    answer_a_correct: boolean,
-    answer_b_correct: boolean,
-    answer_c_correct: boolean,
-    answer_d_correct: boolean,
-    answer_e_correct: boolean,
-    answer_f_correct: boolean
+    answer_a_correct: string,
+    answer_b_correct: string,
+    answer_c_correct: string,
+    answer_d_correct: string,
+    answer_e_correct: string,
+    answer_f_correct: string
   },
   correct_answer: string,
   explanation: string,

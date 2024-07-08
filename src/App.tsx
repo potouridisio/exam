@@ -9,7 +9,29 @@ function App() {
   const [selectedAnswer, setSelectedAnswer] = useState('')
   const [counter, setCounter] = useState(-1)
   const [score, setScore] = useState(0)
+  const [questions, setQuestions] = useState<Question[]>([])
+ 
+ 
+ 
+ const [checkedAnswers, setCheckedAnswers] = useState({
+  a: false,
+  b: false,
+  c: false,
+  d: false,
+  e: false,
+  f: false,
+});
 
+
+const handleCheck = (event: { target: { name: any; checked: any; }; }) => {
+  const { name, checked } = event.target;
+  setCheckedAnswers({
+    ...checkedAnswers,
+    [name]: checked,
+  });
+ 
+  
+};
 
 
   const handleStarOver = () => {
@@ -50,7 +72,7 @@ function App() {
   }
   const handleChange = (e: { target: { value: SetStateAction<string>; }; }) => { setSelectedCategory(e.target.value) }
   console.log(selectedCategory)
-  const [questions, setQuestions] = useState<Question[]>([])
+
 
   useEffect(() => {
     // getCategories().then(data => {
@@ -98,7 +120,9 @@ function App() {
         <div className="  border-2">30''</div>
       </div>
       <p className="text-3xl font-bold underline text-center" >{questions.length > 0 && quizState === 'running' ? questions[counter].question : 'Loading'} </p>
-      <div  >
+      {quizState==='running'?(questions[counter].multiple_correct_answers==='false'?
+      (<div  >
+
         <form className="flex justify-around">
           <div>
             <input type="radio" id="a" value="answer_a" checked={selectedAnswer === 'answer_a'} onChange={handleAnswerChange} />
@@ -122,14 +146,30 @@ function App() {
 
 
         </form>
-      </div>
+      </div>):
+
+    (
+      <div >
+        <div><label><input type='checkbox' name='a' checked={checkedAnswers.a} onChange={handleCheck}/> {questions[counter].answers.answer_a} </label></div>
+        <div><label><input type='checkbox' name='b' checked={checkedAnswers.b} onChange={handleCheck}/> {questions[counter].answers.answer_b} </label></div>
+        <div className={quizState === 'running' ? (questions[counter].answers.answer_c === null ? 'hidden' : '') : ''}><label><input type='checkbox' name='c' checked={checkedAnswers.c} onChange={handleCheck}/> {questions[counter].answers.answer_c} </label></div>
+        <div className={quizState === 'running' ? (questions[counter].answers.answer_d === null ? 'hidden' : '') : ''}><label><input type='checkbox' name='d' checked={checkedAnswers.d} onChange={handleCheck}/> {questions[counter].answers.answer_d} </label></div>
+        <div className={quizState === 'running' ? (questions[counter].answers.answer_e === null ? 'hidden' : '') : ''}><label><input type='checkbox' name='e' checked={checkedAnswers.e} onChange={handleCheck}/> {questions[counter].answers.answer_e} </label></div>
+        <div className={quizState === 'running' ? (questions[counter].answers.answer_f === null ? 'hidden' : '') : ''}><label><input type='checkbox' name='f' checked={checkedAnswers.f} onChange={handleCheck}/> {questions[counter].answers.answer_f} </label></div>
+        
+       
+        
+      </div>)):''}
+
+
+
       <div className="flex justify-between">
         <button className="border-2 border-black rounded-md" onClick={handleStarOver} >Start over</button>
         <button className={quizState === 'running' ? "border-2 border-black rounded-md" : 'hidden'} onClick={handleNextQuest}>{counter === questions.length - 1 ? 'Show results' : 'Next '}</button>
 
       </div>
     </div>
-    <h1 className={score/questions.length*100 <= 0.5 ? 'text-3xl font-bold underline text-center bg-red-600' : 'text-3xl font-bold underline text-center bg-green-600'}> {counter === questions.length ? `Your score is ${score/questions.length*100} %` : ``} </h1>
+    <h1 className={score / questions.length * 100 <= 50 ? 'text-3xl font-bold underline text-center bg-red-600' : 'text-3xl font-bold underline text-center bg-green-600'}> {counter === questions.length ? `Your score is ${score / questions.length * 100} %` : ``} </h1>
 
   </div>
 }
