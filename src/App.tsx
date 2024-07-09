@@ -23,6 +23,22 @@ function App() {
 });
 
 
+
+useEffect(() => {
+ 
+  getQuestions(selectedCategory).then(data => {
+
+    setQuestions(data)
+
+    console.log(data)
+    console.log(questions)
+  })
+}
+  , [selectedCategory])
+
+
+
+
 const handleCheck = (event: { target: { name: any; checked: any; }; }) => {
   const { name, checked } = event.target;
   setCheckedAnswers({
@@ -41,6 +57,7 @@ const handleCheck = (event: { target: { name: any; checked: any; }; }) => {
   }
   const handleNextQuest = () => {
     if (counter !== questions.length - 1) {
+     
 
       if (selectedAnswer === questions[counter].correct_answer) {
         setScore(score + 1)
@@ -56,6 +73,7 @@ const handleCheck = (event: { target: { name: any; checked: any; }; }) => {
       setCounter(counter + 1)
       setQuizState('finished')
     }
+    
 
 
   }
@@ -74,26 +92,7 @@ const handleCheck = (event: { target: { name: any; checked: any; }; }) => {
   console.log(selectedCategory)
 
 
-  useEffect(() => {
-    // getCategories().then(data => {
-    //  const categories = data
-    //  console.log(categories)
-    //  })
-    getQuestions(selectedCategory).then(data => {
-
-      setQuestions(data)
-
-      console.log(data)
-      console.log(questions)
-    })
-  }
-    , [selectedCategory])
-
-  console.log(selectedAnswer)
-  console.log(counter)
-  console.log(score)
-  console.log(questions)
-
+ 
 
   return <div>
 
